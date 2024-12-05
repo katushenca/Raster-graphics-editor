@@ -13,7 +13,7 @@ COLOR = QColor(255, 255, 255)
 
 
 class Canvas:
-    def __init__(self, width: int = 0, height: int = 0, color=QColor(255, 255, 255)):
+    def __init__(self, width: int = WIDTH, height: int = HEIGHT, color=COLOR):
         self.width = width
         self.height = height
         self.qtColor = color

@@ -5,6 +5,6 @@ from Entities.userData import User
 app = QApplication([])
 user = User()
 window = MainWindow(user)
+user.main_window = window
 window.show()
 app.exec()
-print(user.Canvas.qtColor, user.Canvas.width, user.Canvas.height)
