@@ -29,3 +29,10 @@ class Canvas(QGraphicsView):
 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint |
                             Qt.WindowType.WindowStaysOnTopHint)
+
+    def change(self, width, height, color):
+        self.setFixedSize(QSize(width, height))
+        self.setBackgroundBrush(color)
+        self.canvas_entity.width = width
+        self.canvas_entity.height = height
+        self.canvas_entity.qtColor = color

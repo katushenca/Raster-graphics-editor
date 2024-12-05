@@ -8,6 +8,7 @@ class MainWindow(QMainWindow):
     def __init__(self, user):
         super().__init__()
         self.user = user
+        self.canvas_window = None
         self.setWindowTitle("Fiitoshop")
         self.setMinimumSize(QSize(1280, 720))
         self.setMaximumSize(QSize(1920, 1080))
@@ -23,6 +24,12 @@ class MainWindow(QMainWindow):
         self.show()
 
     def create_canvas(self):
+        if self.canvas_window is not None:
+            self.layout.removeWidget(self.canvas_window)
         self.canvas_window = Canvas(self.user.Canvas, parent=self)
         self.layout.addWidget(self.canvas_window)
         self.canvas_window.show()
+
+    def change_canvas(self):
+        self.canvas_window.change(self.user.Canvas.width, self.user.Canvas.height,
+                                  self.user.Canvas.qtColor)

@@ -9,15 +9,17 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QSize
 import Entities.canvas_entity as canvas_entity
-import windows.main_window
 
 
 class CanvasCreateWindow(QDialog):
-    def __init__(self, user):
+    def __init__(self, user, is_creatable):
         super().__init__()
+        self.is_creatable = is_creatable
         self.user = user
         self.setWindowTitle("Создать холст")
         self.setMinimumSize(QSize(canvas_entity.WIDTH, canvas_entity.HEIGHT))
+
+        button_name = "Создать" if is_creatable else "Изменить"
 
         main_layout = QVBoxLayout()
 
@@ -27,9 +29,12 @@ class CanvasCreateWindow(QDialog):
         main_layout.addWidget(QLabel("Цвет холста:"))
         main_layout.addLayout(self.create_color_layout())
 
-        button = QPushButton("Создать")
+        button = QPushButton(button_name)
         main_layout.addWidget(button)
-        button.clicked.connect(user.main_window.create_canvas)
+        if is_creatable:
+            button.clicked.connect(user.main_window.create_canvas)
+        else:
+            button.clicked.connect(user.main_window.change_canvas)
         button.clicked.connect(self.close)
 
         main_layout.addStretch()
