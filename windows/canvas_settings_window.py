@@ -56,15 +56,12 @@ class CanvasCreateWindow(QDialog):
 
     def create_size_layout(self):
         layout = QHBoxLayout()
-
         layout.addWidget(QLabel("Ширина холста:"))
         self.width_spinbox = self._create_spinbox(
             canvas_entity.MIN_WIDTH, canvas_entity.MAX_WIDTH, canvas_entity.WIDTH
         )
         layout.addWidget(self.width_spinbox)
         layout.addWidget(QLabel("px"))
-
-        # Высота
         layout.addSpacing(20)
         layout.addWidget(QLabel("Высота холста:"))
         self.height_spinbox = self._create_spinbox(
@@ -72,33 +69,23 @@ class CanvasCreateWindow(QDialog):
         )
         layout.addWidget(self.height_spinbox)
         layout.addWidget(QLabel("px"))
-
-        # Связь сигналов
         self.width_spinbox.valueChanged.connect(self.update_canvas_size)
         self.height_spinbox.valueChanged.connect(self.update_canvas_size)
 
         return layout
 
-    # Создание layout для выбора цвета
     def create_color_layout(self):
         layout = QVBoxLayout()
-
-        # Кнопка выбора цвета
         self.color_button = QPushButton("Выбрать цвет")
         self.color_button.clicked.connect(self.open_color_dialog)
         layout.addWidget(self.color_button)
-
-        # Метка текущего цвета
-
         self.color_label = QLabel(f"Текущий цвет: {self.user.Canvas.qtColor.name()}")
         self.color_label.setStyleSheet(
             f"background-color: {self.user.Canvas.qtColor.name()}; padding: 10px;"
         )
         layout.addWidget(self.color_label)
-
         return layout
 
-    # Метод для создания SpinBox с диапазоном и значением по умолчанию
     def _create_spinbox(self, min_value, max_value, default_value):
         spinbox = QSpinBox()
         spinbox.setRange(min_value, max_value)

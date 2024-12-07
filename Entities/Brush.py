@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QPainter, QColor, QPen, QBrush
 
+
 class Brush:
-    def __init__(self, color = QColor(255, 255, 255)):
+    def __init__(self, color=QColor(255, 255, 255)):
         self.color = color

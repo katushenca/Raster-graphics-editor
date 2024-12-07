@@ -8,6 +8,7 @@ class MenuBar(QMenuBar):
         super().__init__()
         self.user = user
         file_menu = self.addMenu("Холст")
+        brush_menu = self.addMenu("Кисть")
 
         new_action = QAction("Создать", self)
         change_action = QAction("Изменить", self)
@@ -17,7 +18,7 @@ class MenuBar(QMenuBar):
         brush_action.triggered.connect(self.change_brush)
         file_menu.addAction(new_action)
         file_menu.addAction(change_action)
-        file_menu.addAction(brush_action)
+        brush_menu.addAction(brush_action)
 
 
     def new_canvas(self):
