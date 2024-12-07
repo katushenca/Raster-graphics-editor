@@ -89,7 +89,7 @@ class CanvasCreateWindow(QDialog):
         layout.addWidget(self.color_button)
 
         # Метка текущего цвета
-        self.user.Canvas.qtColor = canvas_entity.COLOR
+
         self.color_label = QLabel(f"Текущий цвет: {self.user.Canvas.qtColor.name()}")
         self.color_label.setStyleSheet(
             f"background-color: {self.user.Canvas.qtColor.name()}; padding: 10px;"

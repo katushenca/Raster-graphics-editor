@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
     def create_canvas(self):
         if self.canvas_window is not None:
             self.layout.removeWidget(self.canvas_window)
-        self.canvas_window = Canvas(self.user.Canvas, parent=self)
+        self.canvas_window = Canvas(self.user.Canvas, self.user, parent=self)
         self.layout.addWidget(self.canvas_window)
         self.canvas_window.show()
 
