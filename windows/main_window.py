@@ -21,6 +21,8 @@ class MainWindow(QMainWindow):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.menu_bar = MenuBar(user)
         self.setMenuBar(self.menu_bar)
+
+
         self.show()
 
     def create_canvas(self):

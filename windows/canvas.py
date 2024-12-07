@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QGraphicsView, QGraphicsScene, QFrame
-from PyQt6.QtGui import QPainter, QColor
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QPainter, QColor, QPen, QBrush
+from PyQt6.QtCore import Qt, QSize, QRectF
 
 
 
@@ -36,3 +36,15 @@ class Canvas(QGraphicsView):
         self.canvas_entity.width = width
         self.canvas_entity.height = height
         self.canvas_entity.qtColor = color
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.start_pos = self.mapToScene(event.pos())
+            x, y = self.start_pos.x(), self.start_pos.y()
+            pixel_size = 1  # Размер пикселя
+
+            self.scene.addRect(QRectF(x, y, pixel_size, pixel_size),
+                               brush=QBrush(QColor("black")))
+
+
+
