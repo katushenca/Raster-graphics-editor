@@ -37,15 +37,21 @@ class Canvas(QGraphicsView):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self.is_drawing = True
-            self.previous_pos = self.mapToScene(event.pos())
-            self.DrawPixels(self.previous_pos, self.previous_pos)
+            if self.user.Brush.is_chosen:
+                self.is_drawing = True
+                self.previous_pos = self.mapToScene(event.pos())
+                self.DrawPixels(self.previous_pos, self.previous_pos)
+            elif self.user.Eraser.is_chosen:
+                self.RemovePixels(event)
+
 
     def mouseMoveEvent(self, event):
-        if self.is_drawing:
+        if self.is_drawing and self.user.Brush.is_chosen:
             current_pos = self.mapToScene(event.pos())
             self.DrawPixels(self.previous_pos, current_pos)
             self.previous_pos = current_pos
+        elif self.user.Eraser.is_chosen:
+            self.RemovePixels(event)
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -74,3 +80,9 @@ class Canvas(QGraphicsView):
 
     def wheelEvent(self, event):
         event.ignore()
+
+    def RemovePixels(self, event):
+        scene_pos = self.mapToScene(event.pos())
+        items = self.scene.items(scene_pos)
+        for item in items:
+            self.scene.removeItem(item)
