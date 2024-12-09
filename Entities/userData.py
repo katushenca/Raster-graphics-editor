@@ -11,3 +11,5 @@ class User:
         self.is_line_drawing = False
         self.lines_dots_count = 0
         self.previous_coord = None
+        self.is_rect_drawing = False
+        self.rectangle_dots_count = 0
