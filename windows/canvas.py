@@ -61,6 +61,14 @@ class Canvas(QGraphicsView):
                     self.draw_rectangle(self.user.previous_coord, scene_pos)
                     self.user.previous_coord = None
                     self.user.rectangle_dots_count = 0
+            elif self.user.is_ellipse_drawing:
+                if self.user.ellipse_dots_count == 0:
+                    self.user.previous_coord = scene_pos
+                    self.user.ellipse_dots_count = 1
+                elif self.user.ellipse_dots_count == 1:
+                    self.draw_ellipse(self.user.previous_coord, scene_pos)
+                    self.user.previous_coord = None
+                    self.user.ellipse_dots_count = 0
 
     def mouseMoveEvent(self, event):
         if self.is_drawing and self.user.Brush.is_chosen:
@@ -104,6 +112,14 @@ class Canvas(QGraphicsView):
                                           self.user.Brush.radius),
                            brush=QBrush(
                                self.user.Brush.color))
+
+    def draw_ellipse(self, start_pos, end_pos):
+        x1, y1 = start_pos.x(), start_pos.y()
+        x2, y2 = end_pos.x(), end_pos.y()
+        rect = QRectF(min(x1, x2), min(y1, y2), abs(x2 - x1), abs(y2 - y1))
+        self.scene.addEllipse(rect, pen=QPen(self.user.Brush.color,
+                                             self.user.Brush.radius),
+                              brush=QBrush(self.user.Brush.color))
 
     def remove_pixels(self, event):
         scene_pos = self.mapToScene(event.pos())

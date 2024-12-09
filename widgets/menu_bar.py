@@ -21,8 +21,12 @@ class MenuBar(QMenuBar):
 
         line = QAction("Линия", self)
         rect = QAction("Прямоугольник", self)
+        ellipse = QAction("Эллипс", self)
+
         line.triggered.connect(self.draw_line)
         rect.triggered.connect(self.draw_rect)
+        ellipse.triggered.connect(self.draw_ellipse)
+
         new_action.triggered.connect(self.new_canvas)
         change_action.triggered.connect(self.change_canvas)
         brush_action.triggered.connect(self.change_brush)
@@ -37,6 +41,7 @@ class MenuBar(QMenuBar):
         brush_menu.addAction(eraser_action)
         figures_menu.addAction(line)
         figures_menu.addAction(rect)
+        figures_menu.addAction(ellipse)
     def new_canvas(self):
         canvas_window = CanvasCreateWindow(self.user, True)
         canvas_window.exec()
@@ -58,21 +63,32 @@ class MenuBar(QMenuBar):
         self.user.Eraser.is_chosen = False
         self.user.is_line_drawing = False
         self.user.is_rect_drawing = False
+        self.user.is_ellipse_drawing = False
 
     def choose_eraser(self):
         self.user.Eraser.is_chosen = True
         self.user.Brush.is_chosen = False
         self.user.is_line_drawing = False
         self.user.is_rect_drawing = False
+        self.user.is_ellipse_drawing = False
 
     def draw_line(self):
         self.user.Eraser.is_chosen = False
         self.user.Brush.is_chosen = False
         self.user.is_line_drawing = True
         self.user.is_rect_drawing = False
+        self.user.is_ellipse_drawing = False
 
     def draw_rect(self):
         self.user.Eraser.is_chosen = False
         self.user.Brush.is_chosen = False
         self.user.is_line_drawing = False
         self.user.is_rect_drawing = True
+        self.user.is_ellipse_drawing = False
+
+    def draw_ellipse(self):
+        self.user.Eraser.is_chosen = False
+        self.user.Brush.is_chosen = False
+        self.user.is_line_drawing = False
+        self.user.is_rect_drawing = False
+        self.user.is_ellipse_drawing = True
