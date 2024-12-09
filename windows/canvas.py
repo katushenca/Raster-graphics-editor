@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QGraphicsView, QGraphicsScene, QFrame
 from PyQt6.QtGui import QPainter, QColor, QPen, QBrush
-from PyQt6.QtCore import Qt, QSize, QRectF
+from PyQt6.QtCore import Qt, QSize, QPointF, QRectF
 
 
 class Canvas(QGraphicsView):
@@ -37,55 +37,62 @@ class Canvas(QGraphicsView):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
+            scene_pos = self.mapToScene(event.pos())
+
             if self.user.Brush.is_chosen:
                 self.is_drawing = True
-                self.previous_pos = self.mapToScene(event.pos())
-                self.DrawPixels(self.previous_pos, self.previous_pos)
+                self.previous_pos = scene_pos
+                self.draw_pixels(self.previous_pos, self.previous_pos)
             elif self.user.Eraser.is_chosen:
-                self.RemovePixels(event)
-
+                self.remove_pixels(event)
+            elif self.user.is_line_drawing:
+                if self.user.lines_dots_count == 0:
+                    self.user.previous_coord = scene_pos
+                    self.user.lines_dots_count = 1
+                elif self.user.lines_dots_count == 1:
+                    self.draw_line(self.user.previous_coord, scene_pos)
+                    self.user.previous_coord = None
+                    self.user.lines_dots_count = 0
 
     def mouseMoveEvent(self, event):
         if self.is_drawing and self.user.Brush.is_chosen:
             current_pos = self.mapToScene(event.pos())
-            self.DrawPixels(self.previous_pos, current_pos)
+            self.draw_pixels(self.previous_pos, current_pos)
             self.previous_pos = current_pos
         elif self.user.Eraser.is_chosen:
-            self.RemovePixels(event)
+            self.remove_pixels(event)
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.is_drawing = False
             self.previous_pos = None
 
-    def DrawPixels(self, start_pos, end_pos):
+    def draw_pixels(self, start_pos, end_pos):
         x1, y1 = start_pos.x(), start_pos.y()
         x2, y2 = end_pos.x(), end_pos.y()
         radius = self.user.Brush.radius
         steps = int(max(abs(x2 - x1), abs(y2 - y1)))
-        if steps == 0:
-            self.scene.addRect(QRectF(x1, y1, radius, radius),
-                               pen=QPen(Qt.PenStyle.NoPen),
-                               brush=QBrush(self.user.Brush.color))
-            return
 
-        dx = (x2 - x1) / steps
-        dy = (y2 - y1) / steps
+        dx = (x2 - x1) / steps if steps else 0
+        dy = (y2 - y1) / steps if steps else 0
+
         for i in range(steps + 1):
             px = x1 + i * dx
             py = y1 + i * dy
-            self.scene.addRect(QRectF(px, py, radius, radius),
+            self.scene.addRect(px, py, radius, radius,
                                pen=QPen(Qt.PenStyle.NoPen),
                                brush=QBrush(self.user.Brush.color))
 
-    def wheelEvent(self, event):
-        event.ignore()
+    def draw_line(self, start_pos, end_pos):
+        line = self.scene.addLine(start_pos.x(), start_pos.y(),
+                                  end_pos.x(), end_pos.y(),
+                                  pen=QPen(self.user.Brush.color, self.user.Brush.radius))
 
-    def RemovePixels(self, event):
+    def remove_pixels(self, event):
         scene_pos = self.mapToScene(event.pos())
         radius = self.user.Eraser.radius
         rect = QRectF(scene_pos.x() - radius, scene_pos.y() - radius,
                       radius * 2, radius * 2)
-        items = self.scene.items(rect)
-        for item in items:
-            self.scene.removeItem(item)
+        for item in self.scene.items(rect):
+            if item is not None:
+                self.scene.removeItem(item)
