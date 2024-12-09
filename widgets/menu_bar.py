@@ -14,6 +14,9 @@ class MenuBar(QMenuBar):
 
         new_action = QAction("Создать", self)
         change_action = QAction("Изменить", self)
+        change_action.setEnabled(False)
+
+
         brush_action = QAction("Настройки кисти", self)
         brush_choose_action = QAction("Кисть", self)
         eraser_choose_action = QAction("Ластик", self)
@@ -42,9 +45,14 @@ class MenuBar(QMenuBar):
         figures_menu.addAction(line)
         figures_menu.addAction(rect)
         figures_menu.addAction(ellipse)
+
+        self.change_action = change_action
     def new_canvas(self):
         canvas_window = CanvasCreateWindow(self.user, True)
         canvas_window.exec()
+        if self.user.Canvas.is_created:
+            self.change_action.setEnabled(True)
+
 
     def change_brush(self):
         brush_window = BrushSettingsWindow(self.user)

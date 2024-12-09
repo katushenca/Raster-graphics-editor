@@ -58,14 +58,14 @@ class CanvasCreateWindow(QDialog):
         layout = QHBoxLayout()
         layout.addWidget(QLabel("Ширина холста:"))
         self.width_spinbox = self._create_spinbox(
-            canvas_entity.MIN_WIDTH, canvas_entity.MAX_WIDTH, canvas_entity.WIDTH
+            canvas_entity.MIN_WIDTH, canvas_entity.MAX_WIDTH, self.user.Canvas.width
         )
         layout.addWidget(self.width_spinbox)
         layout.addWidget(QLabel("px"))
         layout.addSpacing(20)
         layout.addWidget(QLabel("Высота холста:"))
         self.height_spinbox = self._create_spinbox(
-            canvas_entity.MIN_HEIGHT, canvas_entity.MAX_HEIGHT, canvas_entity.HEIGHT
+            canvas_entity.MIN_HEIGHT, canvas_entity.MAX_HEIGHT, self.user.Canvas.height
         )
         layout.addWidget(self.height_spinbox)
         layout.addWidget(QLabel("px"))

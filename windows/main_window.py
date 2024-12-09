@@ -21,8 +21,6 @@ class MainWindow(QMainWindow):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.menu_bar = MenuBar(user)
         self.setMenuBar(self.menu_bar)
-
-
         self.show()
 
     def create_canvas(self):
@@ -31,6 +29,7 @@ class MainWindow(QMainWindow):
         self.canvas_window = Canvas(self.user.Canvas, self.user, parent=self)
         self.layout.addWidget(self.canvas_window)
         self.canvas_window.show()
+        self.user.Canvas.is_created = True
 
     def change_canvas(self):
         self.canvas_window.change(self.user.Canvas.width, self.user.Canvas.height,

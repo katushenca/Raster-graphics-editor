@@ -17,3 +17,4 @@ class Canvas:
         self.width = width
         self.height = height
         self.qtColor = color
+        self.is_created = False
