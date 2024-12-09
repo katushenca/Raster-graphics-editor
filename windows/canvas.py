@@ -74,7 +74,7 @@ class Canvas(QGraphicsView):
         for i in range(steps + 1):
             px = x1 + i * dx
             py = y1 + i * dy
-            self.scene.addRect(QRectF(px, py, 1, 1),
+            self.scene.addRect(QRectF(px, py, 3, 3),
                                pen=QPen(Qt.PenStyle.NoPen),
                                brush=QBrush(self.user.Brush.color))
 
@@ -83,6 +83,9 @@ class Canvas(QGraphicsView):
 
     def RemovePixels(self, event):
         scene_pos = self.mapToScene(event.pos())
-        items = self.scene.items(scene_pos)
+        radius = 5
+        rect = QRectF(scene_pos.x() - radius, scene_pos.y() - radius,
+                      radius * 2, radius * 2)
+        items = self.scene.items(rect)
         for item in items:
             self.scene.removeItem(item)
