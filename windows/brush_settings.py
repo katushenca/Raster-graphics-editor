@@ -5,9 +5,10 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QHBoxLayout,
     QColorDialog,
-    QPushButton
+    QPushButton,
+    QSlider
 )
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, Qt
 
 WIDTH = 400
 HEIGHT = 400
@@ -20,8 +21,14 @@ class BrushSettingsWindow(QDialog):
         self.setMinimumSize(QSize(WIDTH, HEIGHT))
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(QLabel("Цвет холста:"))
+
+        # цвет
+        main_layout.addWidget(QLabel("Цвет кисти:"))
         main_layout.addLayout(self.create_color_layout())
+
+        # размер
+        main_layout.addWidget(QLabel("Размер кисти:"))
+        main_layout.addLayout(self.choose_size_layout())
 
         button = QPushButton("Изменить")
         main_layout.addWidget(button)
@@ -53,3 +60,17 @@ class BrushSettingsWindow(QDialog):
         layout.addWidget(self.color_label)
         return layout
 
+    def choose_size_layout(self):
+        layout = QVBoxLayout()
+        # Ползунок
+        self.slider = QSlider(Qt.Orientation.Horizontal)
+        self.slider.setRange(1, 10)
+        self.slider.setValue(self.user.Brush.radius)
+        self.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
+        self.slider.setTickInterval(1)
+        self.slider.valueChanged.connect(self.update_size)
+        layout.addWidget(self.slider)
+        return layout
+
+    def update_size(self, value):
+        self.user.Brush.radius = value

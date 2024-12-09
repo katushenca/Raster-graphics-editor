@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QMenuBar
 from PyQt6.QtGui import QAction
 from windows.canvas_settings_window import CanvasCreateWindow
 from windows.brush_settings import BrushSettingsWindow
-
+from windows.eraser_settings import EraserSettingsWindow
 
 class MenuBar(QMenuBar):
     def __init__(self, user):
@@ -16,9 +16,11 @@ class MenuBar(QMenuBar):
         brush_action = QAction("Настройки кисти", self)
         brush_choose_action = QAction("Кисть", self)
         eraser_choose_action = QAction("Ластик", self)
+        eraser_action = QAction("Настройки ластика", self)
         new_action.triggered.connect(self.new_canvas)
         change_action.triggered.connect(self.change_canvas)
         brush_action.triggered.connect(self.change_brush)
+        eraser_action.triggered.connect(self.change_eraser)
         brush_choose_action.triggered.connect(self.choose_brush)
         eraser_choose_action.triggered.connect(self.choose_eraser)
         file_menu.addAction(new_action)
@@ -26,6 +28,7 @@ class MenuBar(QMenuBar):
         brush_menu.addAction(brush_action)
         brush_menu.addAction(brush_choose_action)
         brush_menu.addAction(eraser_choose_action)
+        brush_menu.addAction(eraser_action)
 
     def new_canvas(self):
         canvas_window = CanvasCreateWindow(self.user, True)
@@ -34,6 +37,10 @@ class MenuBar(QMenuBar):
     def change_brush(self):
         brush_window = BrushSettingsWindow(self.user)
         brush_window.exec()
+
+    def change_eraser(self):
+        eraser_window = EraserSettingsWindow(self.user)
+        eraser_window.exec()
 
     def change_canvas(self):
         canvas_window = CanvasCreateWindow(self.user, False)

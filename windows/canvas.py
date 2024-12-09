@@ -61,10 +61,10 @@ class Canvas(QGraphicsView):
     def DrawPixels(self, start_pos, end_pos):
         x1, y1 = start_pos.x(), start_pos.y()
         x2, y2 = end_pos.x(), end_pos.y()
-
+        radius = self.user.Brush.radius
         steps = int(max(abs(x2 - x1), abs(y2 - y1)))
         if steps == 0:
-            self.scene.addRect(QRectF(x1, y1, 1, 1),
+            self.scene.addRect(QRectF(x1, y1, radius, radius),
                                pen=QPen(Qt.PenStyle.NoPen),
                                brush=QBrush(self.user.Brush.color))
             return
@@ -74,7 +74,7 @@ class Canvas(QGraphicsView):
         for i in range(steps + 1):
             px = x1 + i * dx
             py = y1 + i * dy
-            self.scene.addRect(QRectF(px, py, 3, 3),
+            self.scene.addRect(QRectF(px, py, radius, radius),
                                pen=QPen(Qt.PenStyle.NoPen),
                                brush=QBrush(self.user.Brush.color))
 
@@ -83,7 +83,7 @@ class Canvas(QGraphicsView):
 
     def RemovePixels(self, event):
         scene_pos = self.mapToScene(event.pos())
-        radius = 5
+        radius = self.user.Eraser.radius
         rect = QRectF(scene_pos.x() - radius, scene_pos.y() - radius,
                       radius * 2, radius * 2)
         items = self.scene.items(rect)
